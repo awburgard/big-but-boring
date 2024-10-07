@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
-import { SignUp } from './components/SignUp.tsx'
-import { Login } from './components/Login.tsx'
-import { SetupProgram } from './components/SetupProgram.tsx'
-import { TrainingWeek } from './components/TrainingWeek.tsx'
+import WeekViewContainer from './containers/WeekViewContainer.tsx'
+import DayViewContainer from './containers/DayViewContainer.tsx'
+import SignupContainer from './containers/SignUpContainer.tsx'
+import LoginContainer from './containers/LoginContainer.tsx'
 
 const router = createBrowserRouter([
   {
@@ -15,19 +15,20 @@ const router = createBrowserRouter([
   },
   {
     path: 'sign-up',
-    element: <SignUp />,
+    element: <SignupContainer />,
   },
   {
     path: 'login',
-    element: <Login />,
+    element: <LoginContainer />,
   },
-  {
-    path: 'setup',
-    element: <SetupProgram />,
-  },
+
   {
     path: 'training-week',
-    element: <TrainingWeek />,
+    element: <WeekViewContainer />,
+  },
+  {
+    path: 'day/:dayId',
+    element: <DayViewContainer />,
   },
 ])
 
