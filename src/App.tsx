@@ -1,10 +1,10 @@
-import { AppBar, Toolbar, Typography, Button } from '@mui/material'
-import { Link, Outlet } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { logoutUser } from '../modules/authService'
-import supabase from '../client/supabase'
+import { AppBar, Toolbar, Typography, Button } from '@mui/material'
+import { logoutUser } from './modules/authService'
+import supabase from './client/supabase'
 
-const Layout = () => {
+function App() {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
@@ -30,16 +30,16 @@ const Layout = () => {
 
   return (
     <div>
-      <AppBar position='static' color='primary'>
+      <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6' sx={{ flexGrow: 1 }}>
             5/3/1 Lift Tracker
           </Typography>
+          <Button component={Link} to='/' color='inherit'>
+            Home
+          </Button>
           <Button component={Link} to='/training-week' color='inherit'>
             Training Week
-          </Button>
-          <Button component={Link} to='/programs' color='inherit'>
-            Programs
           </Button>
           <Button component={Link} to='/setup' color='inherit'>
             Setup Program
@@ -60,11 +60,8 @@ const Layout = () => {
           )}
         </Toolbar>
       </AppBar>
-      <main>
-        <Outlet />
-      </main>
     </div>
   )
 }
 
-export default Layout
+export default App
