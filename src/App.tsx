@@ -38,6 +38,9 @@ function App() {
           <li>
             <Link to='/training-week'>Training Week</Link>
           </li>
+          <li>
+            <Link to='/setup'>Setup Program</Link>
+          </li>
           {user ? (
             <>
               <li>

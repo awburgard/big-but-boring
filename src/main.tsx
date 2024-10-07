@@ -7,6 +7,7 @@ import WeekViewContainer from './containers/WeekViewContainer.tsx'
 import DayViewContainer from './containers/DayViewContainer.tsx'
 import SignupContainer from './containers/SignUpContainer.tsx'
 import LoginContainer from './containers/LoginContainer.tsx'
+import SetupProgramContainer from './containers/SetUpProgramContainer.tsx'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: 'day/:dayId',
     element: <DayViewContainer />,
+  },
+  {
+    path: '/setup',
+    element: <SetupProgramContainer />,
   },
 ])
 

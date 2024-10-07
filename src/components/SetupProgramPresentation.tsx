@@ -1,11 +1,17 @@
 import { FormEvent } from 'react'
 
 type SetupProgramPresentationProps = {
-  estimatedOneRepMax: { squat: number; bench: number; deadlift: number }
+  estimatedOneRepMax: {
+    squat: number
+    bench: number
+    deadlift: number
+    shoulder_press: number
+  }
   startDate: string
   trainingMaxSquat: number
   trainingMaxBench: number
   trainingMaxDeadlift: number
+  trainingShoulderPress: number
   showModal: boolean
   onSetEstimatedOneRepMax: (lift: string, estimate: number) => void
   onSetStartDate: (date: string) => void
@@ -19,6 +25,7 @@ const SetupProgramPresentation = ({
   trainingMaxSquat,
   trainingMaxBench,
   trainingMaxDeadlift,
+  trainingShoulderPress,
   onSetEstimatedOneRepMax,
   onSetStartDate,
   onSubmit,
@@ -34,7 +41,7 @@ const SetupProgramPresentation = ({
       />
     </div>
     <div>
-      <p>Set your estimated one rep max</p>
+      <p>Set your estimated one rep maxes</p>
       <input
         type='number'
         value={estimatedOneRepMax.squat}
@@ -61,7 +68,19 @@ const SetupProgramPresentation = ({
         }
         placeholder='Enter your estimated one rep max for your bench'
       />
-      <p>This is your training max for your bench: {trainingMaxBench}</p>
+      <p>This is your training max for your bench press: {trainingMaxBench}</p>
+      <input
+        type='number'
+        value={estimatedOneRepMax.shoulder_press}
+        onChange={(e) =>
+          onSetEstimatedOneRepMax('shoulder_press', Number(e.target.value))
+        }
+        placeholder='Enter your estimated one rep max for your shoulder preess'
+      />
+      <p>
+        This is your training max for your shoulder press:{' '}
+        {trainingShoulderPress}
+      </p>
       <button type='submit'>Submit maxes</button>
     </div>
   </form>

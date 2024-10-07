@@ -16,6 +16,7 @@ const SetupProgramContainer = () => {
     squat: 0,
     bench: 0,
     deadlift: 0,
+    shoulder_press: 0,
   })
   const [startDate, setStartDate] = useState<string>(
     new Date().toISOString().split('T')[0]
@@ -37,6 +38,9 @@ const SetupProgramContainer = () => {
   const trainingMaxSquat = calculateTrainingMax(estimatedOneRepMax.squat)
   const trainingMaxBench = calculateTrainingMax(estimatedOneRepMax.bench)
   const trainingMaxDeadlift = calculateTrainingMax(estimatedOneRepMax.deadlift)
+  const trainingShoulderPress = calculateTrainingMax(
+    estimatedOneRepMax.shoulder_press
+  )
 
   const handleSetEstimatedOneRepMax = (lift: string, estimate: number) => {
     setEstimatedOneRepMax((prev) => ({
@@ -64,6 +68,7 @@ const SetupProgramContainer = () => {
       trainingMaxSquat={trainingMaxSquat}
       trainingMaxBench={trainingMaxBench}
       trainingMaxDeadlift={trainingMaxDeadlift}
+      trainingShoulderPress={trainingShoulderPress}
       showModal={showModal}
       onSetEstimatedOneRepMax={handleSetEstimatedOneRepMax}
       onSetStartDate={setStartDate}

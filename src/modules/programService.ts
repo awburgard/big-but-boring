@@ -2,7 +2,12 @@ import supabase from '../client/supabase'
 
 export const createOrUpdateProgram = async (
   userId: string,
-  estimatedOneRepMax: { squat: number; bench: number; deadlift: number },
+  estimatedOneRepMax: {
+    squat: number
+    bench: number
+    deadlift: number
+    shoulder_press: number
+  },
   startDate: string
 ) => {
   // Upsert estimated one rep max
@@ -13,6 +18,7 @@ export const createOrUpdateProgram = async (
         squat: estimatedOneRepMax.squat,
         deadlift: estimatedOneRepMax.deadlift,
         bench_press: estimatedOneRepMax.bench,
+        shoulder_press: estimatedOneRepMax.shoulder_press,
         user_id: userId,
       },
       { onConflict: 'user_id' }
