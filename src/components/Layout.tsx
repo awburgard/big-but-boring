@@ -35,9 +35,6 @@ const Layout = () => {
           <Typography variant='h6' sx={{ flexGrow: 1 }}>
             5/3/1 Lift Tracker
           </Typography>
-          <Button component={Link} to='/' color='inherit'>
-            Home
-          </Button>
           <Button component={Link} to='/training-week' color='inherit'>
             Training Week
           </Button>

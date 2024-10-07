@@ -70,7 +70,7 @@ const ProgramsPresentation: React.FC<ProgramsPresentationProps> = ({
             }
           >
             <ListItemAvatar>
-              <Avatar>
+              <Avatar variant='square' sizes='small'>
                 <FitnessCenterIcon />
               </Avatar>
             </ListItemAvatar>

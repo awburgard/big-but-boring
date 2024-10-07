@@ -13,7 +13,7 @@ const LoginContainer = () => {
     e.preventDefault()
     try {
       await loginUser(email, password)
-      navigate('/') // Redirect to the main page after login
+      navigate('/training-week') // Redirect to the main page after login
     } catch (err) {
       setError((err as Error).message)
     }
