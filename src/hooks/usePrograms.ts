@@ -52,7 +52,7 @@ const usePrograms = () => {
   const markProgramAsCompleted = async (programId: string) => {
     const { error } = await supabase
       .from('programs')
-      .update({ completed: true })
+      .update({ completed: true, status: 'completed' })
       .eq('id', programId)
 
     if (error) {

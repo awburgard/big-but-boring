@@ -1,3 +1,5 @@
+import { Button, TextField, Typography } from '@mui/material'
+
 type SignupPresentationProps = {
   email: string
   password: string
@@ -16,23 +18,23 @@ const SignupPresentation = ({
   onSubmit,
 }: SignupPresentationProps) => (
   <form onSubmit={onSubmit}>
-    <h2>Sign Up</h2>
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    <input
+    <Typography variant='h6'>Sign Up</Typography>
+    {error && <Typography color='error'>{error}</Typography>}
+    <TextField
       type='email'
       value={email}
       onChange={(e) => onEmailChange(e.target.value)}
       placeholder='Email'
       required
     />
-    <input
+    <TextField
       type='password'
       value={password}
       onChange={(e) => onPasswordChange(e.target.value)}
       placeholder='Password'
       required
     />
-    <button type='submit'>Sign Up</button>
+    <Button type='submit'>Sign Up</Button>
   </form>
 )
 

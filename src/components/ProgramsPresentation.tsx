@@ -1,3 +1,17 @@
+import {
+  Avatar,
+  Grid2,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import StopCircleIcon from '@mui/icons-material/StopCircle'
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter'
+
 import React from 'react'
 
 interface ProgramsPresentationProps {
@@ -19,33 +33,56 @@ const ProgramsPresentation: React.FC<ProgramsPresentationProps> = ({
   if (error) return <div>Error: {error}</div>
 
   return (
-    <div>
-      <h1>Your Programs</h1>
+    <Grid2 container spacing={2}>
+      <Typography variant='h3'>Your Programs</Typography>
       {estimatedMaxes && (
-        <div>
-          <h2>Your Estimated One Rep Maxes</h2>
-          <p>Squat: {estimatedMaxes.squat}</p>
-          <p>Bench Press: {estimatedMaxes.bench_press}</p>
-          <p>Deadlift: {estimatedMaxes.deadlift}</p>
-          <p>Shoulder Press: {estimatedMaxes.shoulder_press}</p>
-        </div>
+        <Grid2 container size={12}>
+          <Typography variant='h4'>Your Estimated One Rep Maxes</Typography>
+          <Grid2 size={12}>
+            <Typography>Squat: {estimatedMaxes.squat}</Typography>
+            <Typography>Bench Press: {estimatedMaxes.bench_press}</Typography>
+          </Grid2>
+          <Grid2 size={12}>
+            <Typography>Deadlift: {estimatedMaxes.deadlift}</Typography>
+            <Typography>
+              Shoulder Press: {estimatedMaxes.shoulder_press}
+            </Typography>
+          </Grid2>
+        </Grid2>
       )}
-      <ul>
+      <List dense>
         {programs.map((program) => (
-          <li key={program.id}>
-            <div>
-              <p>
-                Start Date: {new Date(program.start_date).toLocaleDateString()}
-              </p>
-              <p>Status: {program.completed ? 'Completed' : 'Active'}</p>
-              <button onClick={() => onEndProgram(program.id)}>
-                End Program
-              </button>
-            </div>
-          </li>
+          <ListItem
+            key={program.id}
+            secondaryAction={
+              program.status === 'active' && (
+                <Tooltip title='End Program'>
+                  <IconButton
+                    edge='end'
+                    aria-label='delete'
+                    onClick={() => onEndProgram(program.id)}
+                    color='error'
+                  >
+                    <StopCircleIcon />
+                  </IconButton>
+                </Tooltip>
+              )
+            }
+          >
+            <ListItemAvatar>
+              <Avatar>
+                <FitnessCenterIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={`Start Date: ${new Date(
+                program.start_date
+              ).toLocaleDateString()}`}
+            />
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Grid2>
   )
 }
 
