@@ -9,34 +9,151 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      estimate_one_rep_maxes: {
+      estimated_one_rep_max: {
         Row: {
-          bench: number | null
-          created_at: string
-          deadlift: number | null
-          id: number
-          squat: number | null
+          bench_press: number
+          created_at: string | null
+          deadlift: number
+          id: string
+          shoulder_press: number
+          squat: number
           user_id: string | null
         }
         Insert: {
-          bench?: number | null
-          created_at?: string
-          deadlift?: number | null
-          id?: number
-          squat?: number | null
+          bench_press: number
+          created_at?: string | null
+          deadlift: number
+          id?: string
+          shoulder_press: number
+          squat: number
           user_id?: string | null
         }
         Update: {
-          bench?: number | null
-          created_at?: string
-          deadlift?: number | null
-          id?: number
-          squat?: number | null
+          bench_press?: number
+          created_at?: string | null
+          deadlift?: number
+          id?: string
+          shoulder_press?: number
+          squat?: number
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "estimate_one_rep_maxes_user_id_fkey"
+            foreignKeyName: "estimated_one_rep_max_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      program_templates: {
+        Row: {
+          id: string
+          percentage: number
+          reps: number
+          set_number: number
+          week_number: number
+        }
+        Insert: {
+          id?: string
+          percentage: number
+          reps: number
+          set_number: number
+          week_number: number
+        }
+        Update: {
+          id?: string
+          percentage?: number
+          reps?: number
+          set_number?: number
+          week_number?: number
+        }
+        Relationships: []
+      }
+      program_weeks: {
+        Row: {
+          day_number: number
+          id: string
+          lift_name: string
+          notes: string | null
+          program_id: string | null
+          set_number: number
+          template_id: string | null
+          week_number: number
+        }
+        Insert: {
+          day_number: number
+          id?: string
+          lift_name: string
+          notes?: string | null
+          program_id?: string | null
+          set_number: number
+          template_id?: string | null
+          week_number: number
+        }
+        Update: {
+          day_number?: number
+          id?: string
+          lift_name?: string
+          notes?: string | null
+          program_id?: string | null
+          set_number?: number
+          template_id?: string | null
+          week_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "program_weeks_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "current_day_lifts"
+            referencedColumns: ["program_id"]
+          },
+          {
+            foreignKeyName: "program_weeks_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "program_weeks_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "program_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programs: {
+        Row: {
+          created_at: string | null
+          end_date: string | null
+          id: string
+          start_date: string
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          start_date: string
+          status: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -46,10 +163,37 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      current_day_lifts: {
+        Row: {
+          day_number: number | null
+          lift_name: string | null
+          notes: string | null
+          percentage: number | null
+          program_id: string | null
+          program_week_id: string | null
+          reps: number | null
+          user_id: string | null
+          week_number: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      calculate_weight: {
+        Args: {
+          est_max: number
+          percentage: number
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
