@@ -27,14 +27,11 @@ export const createOrUpdateProgram = async (
   if (oneRepMaxError) throw oneRepMaxError
 
   // Upsert program
-  const { error: programError } = await supabase.from('programs').upsert(
-    {
-      start_date: startDate,
-      user_id: userId,
-      status: 'active',
-    },
-    { onConflict: 'user_id' }
-  )
+  const { error: programError } = await supabase.from('programs').upsert({
+    start_date: startDate,
+    user_id: userId,
+    status: 'active',
+  })
 
   if (programError) throw programError
 }
