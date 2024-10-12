@@ -2,11 +2,11 @@ import { Button, Grid2, TextField, Typography } from '@mui/material'
 import { FormEvent } from 'react'
 
 type SetupProgramPresentationProps = {
-  estimatedOneRepMax: {
-    squat: number
-    bench: number
-    deadlift: number
-    shoulder_press: number
+  lifts: {
+    Squat: number
+    Bench: number
+    Deadlift: number
+    OHP: number
   }
   startDate: string
   trainingMaxSquat: number
@@ -21,7 +21,7 @@ type SetupProgramPresentationProps = {
 }
 
 const SetupProgramPresentation = ({
-  estimatedOneRepMax,
+  lifts,
   startDate,
   trainingMaxSquat,
   trainingMaxBench,
@@ -48,9 +48,9 @@ const SetupProgramPresentation = ({
       <Grid2 size={6}>
         <TextField
           type='number'
-          value={estimatedOneRepMax.squat}
+          value={lifts.Squat}
           onChange={(e) =>
-            onSetEstimatedOneRepMax('squat', Number(e.target.value))
+            onSetEstimatedOneRepMax('Squat', Number(e.target.value))
           }
           placeholder='Enter your estimated one rep max for your squat'
         />
@@ -61,9 +61,9 @@ const SetupProgramPresentation = ({
       <Grid2 size={6}>
         <TextField
           type='number'
-          value={estimatedOneRepMax.deadlift}
+          value={lifts.Deadlift}
           onChange={(e) =>
-            onSetEstimatedOneRepMax('deadlift', Number(e.target.value))
+            onSetEstimatedOneRepMax('Deadlift', Number(e.target.value))
           }
           placeholder='Enter your estimated one rep max for your deadlift'
         />
@@ -74,9 +74,9 @@ const SetupProgramPresentation = ({
       <Grid2 size={6}>
         <TextField
           type='number'
-          value={estimatedOneRepMax.bench}
+          value={lifts.Bench}
           onChange={(e) =>
-            onSetEstimatedOneRepMax('bench', Number(e.target.value))
+            onSetEstimatedOneRepMax('Bench', Number(e.target.value))
           }
           placeholder='Enter your estimated one rep max for your bench'
         />
@@ -87,15 +87,14 @@ const SetupProgramPresentation = ({
       <Grid2 size={6}>
         <TextField
           type='number'
-          value={estimatedOneRepMax.shoulder_press}
+          value={lifts.OHP}
           onChange={(e) =>
-            onSetEstimatedOneRepMax('shoulder_press', Number(e.target.value))
+            onSetEstimatedOneRepMax('OHP', Number(e.target.value))
           }
           placeholder='Enter your estimated one rep max for your shoulder preess'
         />
         <Typography>
-          This is your training max for your shoulder press:{' '}
-          {trainingShoulderPress}
+          This is your training max for your OHP: {trainingShoulderPress}
         </Typography>
       </Grid2>
       <Grid2 size={12}>

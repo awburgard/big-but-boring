@@ -17,6 +17,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme/index.ts'
+import ProgramDetailContainer from './containers/ProgramDetailContainer.tsx'
 
 const router = createBrowserRouter([
   {
@@ -33,11 +34,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: 'training-week',
-        element: <WeekViewContainer />,
-      },
-      {
-        path: 'day/:dayId',
+        path: 'programs/:programId/days/:dayNumber',
         element: <DayViewContainer />,
       },
       {
@@ -47,6 +44,16 @@ const router = createBrowserRouter([
       {
         path: '/programs',
         element: <ProgramsContainer />,
+        children: [
+          {
+            path: ':programId',
+            element: <ProgramDetailContainer />,
+          },
+          {
+            path: ':programId/weeks/:weekNumber',
+            element: <WeekViewContainer />,
+          },
+        ],
       },
     ],
   },

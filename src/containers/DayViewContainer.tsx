@@ -1,69 +1,36 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import {
-  getDayProgram,
-  updateDayStatus,
-  updateDayNotes,
-} from '../modules/programService'
+import React, { useEffect, useState } from 'react'
 import DayViewPresentation from '../components/DayViewPresentation'
-import { getUser } from '../modules/userService'
+import { useParams } from 'react-router-dom'
+import { getLiftsForDay } from '../client/getLiftsForDay'
 
-const DayViewContainer = () => {
-  const { dayId } = useParams<{ dayId: string }>()
-  const [dayData, setDayData] = useState<any>(null)
-  const [notes, setNotes] = useState<string>('')
-  const [status, setStatus] = useState<'completed' | 'incomplete'>('incomplete')
+const DayViewContainer: React.FC = () => {
+  const { programId, dayNumber, weekNumber } = useParams()
+  const [dayData, setDayData] = useState<any | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchUserAndDayData = async () => {
+    const fetchDayView = async () => {
       try {
-        const user = await getUser()
-
-        if (user && dayId) {
-          const data = await getDayProgram(user.user.id, dayId)
-          setDayData(data)
-          setNotes(data.notes || '')
-          setStatus(data.status || 'incomplete')
-        }
-      } catch (error) {
-        console.error('Error fetching day data:', error)
+        setLoading(true)
+        const data = await getLiftsForDay({
+          programId: programId!,
+          dayNumber: Number(dayNumber),
+          weekNumber: Number(weekNumber),
+        })
+        setDayData(data)
+      } catch (err) {
+        setError((err as string) ?? 'Unknown error')
+      } finally {
+        setLoading(false)
       }
     }
 
-    fetchUserAndDayData()
-  }, [dayId])
-
-  const handleNotesChange = async (newNotes: string) => {
-    try {
-      setNotes(newNotes)
-      if (dayId) {
-        await updateDayNotes(dayId, newNotes)
-      }
-    } catch (error) {
-      console.error('Error updating notes:', error)
-    }
-  }
-
-  const handleStatusToggle = async () => {
-    try {
-      if (dayId) {
-        const newStatus = status === 'incomplete' ? 'completed' : 'incomplete'
-        setStatus(newStatus)
-        await updateDayStatus(dayId, newStatus)
-      }
-    } catch (error) {
-      console.error('Error updating status:', error)
-    }
-  }
+    fetchDayView()
+  }, [programId, dayNumber])
 
   return (
-    <DayViewPresentation
-      dayData={dayData}
-      notes={notes}
-      status={status}
-      onNotesChange={handleNotesChange}
-      onStatusToggle={handleStatusToggle}
-    />
+    <DayViewPresentation dayData={dayData} loading={loading} error={error} />
   )
 }
 

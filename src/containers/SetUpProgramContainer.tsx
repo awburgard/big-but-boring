@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import { calculateTrainingMax } from '../utils/calculateTrainingMax'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getUser } from '../modules/userService'
-import { createOrUpdateProgram } from '../modules/programService'
+import { createProgramWithWorkouts } from '../modules/programService'
 import SetupProgramPresentation from '../components/SetupProgramPresentation'
 import { User } from '@supabase/supabase-js'
 
@@ -12,11 +12,11 @@ const SetupProgramContainer = () => {
   const [user, setUser] = useState<{
     user: User
   } | null>(null)
-  const [estimatedOneRepMax, setEstimatedOneRepMax] = useState({
-    squat: 0,
-    bench: 0,
-    deadlift: 0,
-    shoulder_press: 0,
+  const [lifts, setLifts] = useState({
+    Squat: 0,
+    Bench: 0,
+    Deadlift: 0,
+    OHP: 0,
   })
   const [startDate, setStartDate] = useState<string>(
     new Date().toISOString().split('T')[0]
@@ -35,15 +35,13 @@ const SetupProgramContainer = () => {
     }
   }, [location.search])
 
-  const trainingMaxSquat = calculateTrainingMax(estimatedOneRepMax.squat)
-  const trainingMaxBench = calculateTrainingMax(estimatedOneRepMax.bench)
-  const trainingMaxDeadlift = calculateTrainingMax(estimatedOneRepMax.deadlift)
-  const trainingShoulderPress = calculateTrainingMax(
-    estimatedOneRepMax.shoulder_press
-  )
+  const trainingMaxSquat = calculateTrainingMax(lifts.Squat)
+  const trainingMaxBench = calculateTrainingMax(lifts.Bench)
+  const trainingMaxDeadlift = calculateTrainingMax(lifts.Deadlift)
+  const trainingShoulderPress = calculateTrainingMax(lifts.OHP)
 
   const handleSetEstimatedOneRepMax = (lift: string, estimate: number) => {
-    setEstimatedOneRepMax((prev) => ({
+    setLifts((prev) => ({
       ...prev,
       [lift]: estimate,
     }))
@@ -54,8 +52,8 @@ const SetupProgramContainer = () => {
     if (!user) return
 
     try {
-      await createOrUpdateProgram(user.user.id, estimatedOneRepMax, startDate)
-      navigate('/programs') // Navigate to programs page or appropriate route after successful submission
+      const programId = await createProgramWithWorkouts(user.user.id, lifts)
+      navigate(`/programs/${programId}/weeks/1/days/1`)
     } catch (error) {
       console.error('Something went wrong', error)
     }
@@ -63,7 +61,7 @@ const SetupProgramContainer = () => {
 
   return (
     <SetupProgramPresentation
-      estimatedOneRepMax={estimatedOneRepMax}
+      lifts={lifts}
       startDate={startDate}
       trainingMaxSquat={trainingMaxSquat}
       trainingMaxBench={trainingMaxBench}

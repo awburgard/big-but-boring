@@ -1,39 +1,29 @@
-type DayViewPresentationProps = {
-  dayData: any
-  notes: string
-  status: 'completed' | 'incomplete'
-  onNotesChange: (newNotes: string) => void
-  onStatusToggle: () => void
+import React from 'react'
+
+interface DayViewPresentationProps {
+  dayData: any | null
+  loading: boolean
+  error: string | null
 }
 
-const DayViewPresentation = ({
+const DayViewPresentation: React.FC<DayViewPresentationProps> = ({
   dayData,
-  notes,
-  status,
-  onNotesChange,
-  onStatusToggle,
-}: DayViewPresentationProps) => (
-  <div>
-    <h2>{dayData?.name}</h2>
+  loading,
+  error,
+}) => {
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
+
+  return (
     <div>
-      {dayData?.lifts?.map((lift: any, index: number) => (
-        <div key={index}>
-          <h3>{lift.name}</h3>
-          <p>
-            Sets: {lift.sets}, Reps: {lift.reps}, Percentage: {lift.percentage}
-          </p>
-        </div>
+      <h1>Day {dayData.day_number}</h1>
+      {dayData.current_day_lifts.map((lift: any) => (
+        <p key={lift.id}>
+          {lift.lift_name}: {lift.set_reps} ({lift.percentage}%)
+        </p>
       ))}
     </div>
-    <textarea
-      value={notes}
-      onChange={(e) => onNotesChange(e.target.value)}
-      placeholder='Add notes for this day'
-    />
-    <button onClick={onStatusToggle}>
-      Mark as {status === 'completed' ? 'Incomplete' : 'Completed'}
-    </button>
-  </div>
-)
+  )
+}
 
 export default DayViewPresentation

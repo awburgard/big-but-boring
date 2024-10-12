@@ -1,31 +1,38 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { getWeekProgram } from '../modules/programService'
+import React, { useEffect, useState } from 'react'
 import WeekViewPresentation from '../components/WeekViewPresentation'
-import { getUser } from '../modules/userService'
+import { useParams } from 'react-router-dom'
+import { fetchWeeklyWorkoutSummary } from '../modules/programService'
 
-const WeekViewContainer = () => {
+const WeekViewContainer: React.FC = () => {
+  const { programId, weekNumber } = useParams<{
+    programId: string
+    weekNumber: string
+  }>()
   const [weekData, setWeekData] = useState<any[]>([])
-
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchUserAndProgram = async () => {
-      const user = await getUser()
-      if (user) {
-        const data = await getWeekProgram(user.user.id)
-        setWeekData(data)
+    const fetchWeekView = async () => {
+      try {
+        setLoading(true)
+        if (programId && weekNumber) {
+          const data = await fetchWeeklyWorkoutSummary(programId, weekNumber)
+          setWeekData(data || [])
+        }
+      } catch (err) {
+        console.error(err)
+        setError('Failed to load week data.')
+      } finally {
+        setLoading(false)
       }
     }
-    fetchUserAndProgram()
-  }, [])
 
-  const handleDayClick = (dayId: string) => {
-    navigate(`/day/${dayId}`)
-  }
+    fetchWeekView()
+  }, [programId, weekNumber])
 
   return (
-    <WeekViewPresentation weekData={weekData} onDayClick={handleDayClick} />
+    <WeekViewPresentation weekData={weekData} loading={loading} error={error} />
   )
 }
 

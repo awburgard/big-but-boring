@@ -5,29 +5,29 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Tooltip,
   Typography,
 } from '@mui/material'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter'
-
 import React from 'react'
 
 interface ProgramsPresentationProps {
   programs: any[]
-  estimatedMaxes: any | null
   loading: boolean
   error: string | null
   onEndProgram: (programId: string) => void
+  onViewProgram: (programId: string) => void // Add onViewProgram prop
 }
 
 const ProgramsPresentation: React.FC<ProgramsPresentationProps> = ({
   programs,
-  estimatedMaxes,
   loading,
   error,
   onEndProgram,
+  onViewProgram,
 }) => {
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
@@ -35,21 +35,6 @@ const ProgramsPresentation: React.FC<ProgramsPresentationProps> = ({
   return (
     <Grid2 container spacing={2}>
       <Typography variant='h3'>Your Programs</Typography>
-      {estimatedMaxes && (
-        <Grid2 container size={12}>
-          <Typography variant='h4'>Your Estimated One Rep Maxes</Typography>
-          <Grid2 size={12}>
-            <Typography>Squat: {estimatedMaxes.squat}</Typography>
-            <Typography>Bench Press: {estimatedMaxes.bench_press}</Typography>
-          </Grid2>
-          <Grid2 size={12}>
-            <Typography>Deadlift: {estimatedMaxes.deadlift}</Typography>
-            <Typography>
-              Shoulder Press: {estimatedMaxes.shoulder_press}
-            </Typography>
-          </Grid2>
-        </Grid2>
-      )}
       <List dense>
         {programs.map((program) => (
           <ListItem
@@ -68,17 +53,15 @@ const ProgramsPresentation: React.FC<ProgramsPresentationProps> = ({
                 </Tooltip>
               )
             }
+            component={ListItemButton}
+            onClick={() => onViewProgram(program.id)} // Navigate to the detail view when clicked
           >
             <ListItemAvatar>
               <Avatar variant='square' sizes='small'>
                 <FitnessCenterIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary={`Start Date: ${new Date(
-                program.start_date
-              ).toLocaleDateString()}`}
-            />
+            <ListItemText>{program.id}</ListItemText>
           </ListItem>
         ))}
       </List>
